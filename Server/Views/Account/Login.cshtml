@@ -1,0 +1,38 @@
+﻿@model Server.Models.LoginData
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="~/css/login.css">
+</head>
+<body>
+    <h2 class="element">Login</h2>
+
+    @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
+    {
+        <div style="color:red;">
+            @ViewData["ErrorMessage"]
+        </div>
+    }
+
+    <form asp-action="Login" method="post">
+        <div class="element">
+            <div class="container">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="Email" value="@Model.Email" required />
+            </div>
+
+            <div class="container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="Password" required />
+            </div>
+        </div>
+
+        <button class="element" type="submit">Login</button>
+    </form>
+</body>
+</html>
