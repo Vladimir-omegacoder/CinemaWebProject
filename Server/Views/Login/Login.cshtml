@@ -1,4 +1,4 @@
-﻿@model Server.Models.LoginData
+﻿@model Server.Models.DataModel.LoginCredentials
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
-    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="~/css/credentials.css">
 </head>
 <body>
     <h2 class="element">Login</h2>
@@ -30,9 +30,17 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="Password" required />
             </div>
+
+            <div class="container">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
         </div>
 
         <button class="element" type="submit">Login</button>
+
+        <div class="form-link container">
+            Don't have an account? <a asp-controller="Registration" asp-action="Register">Register here</a>
+        </div>
     </form>
 </body>
 </html>

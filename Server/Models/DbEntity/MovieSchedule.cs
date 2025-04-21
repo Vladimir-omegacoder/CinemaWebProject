@@ -21,5 +21,5 @@ public partial class MovieSchedule
 
     public virtual Movie Movie { get; set; } = null!;
 
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public virtual Ticket? Ticket { get; set; }
 }

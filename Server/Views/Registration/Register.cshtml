@@ -1,0 +1,47 @@
+﻿@model Server.Models.DataModel.RegistrationData
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Register</title>
+    <link rel="stylesheet" href="~/css/credentials.css" />
+</head>
+<body>
+    <h2 class="element">Register</h2>
+
+    <form asp-action="Register" method="post">
+        <div class="element">
+            <div class="container">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="Email" value="@Model?.Email" required />
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="container">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="Username" value="@Model?.Username" required />
+                @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="Password" required />
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="container">
+                <label for="confirmPassword">Repeat Password</label>
+                <input type="password" id="confirmPassword" name="ConfirmPassword" required />
+                @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <button class="element" type="submit">Register</button>
+
+        <div class="form-link container">
+            Already have an account? <a asp-controller="Login" asp-action="Login">Login here</a>
+        </div>
+    </form>
+</body>
+</html>

@@ -11,6 +11,8 @@ public partial class Booking
 
     public int TicketId { get; set; }
 
+    public int SeatId { get; set; }
+
     public DateTime BookingDate { get; set; }
 
     public virtual Customer Customer { get; set; } = null!;

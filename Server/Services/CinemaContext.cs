@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Server.Models.DbEntity;
 
-namespace Server;
+namespace Server.Services;
 
 public partial class CinemaContext : DbContext
 {
@@ -30,9 +30,17 @@ public partial class CinemaContext : DbContext
 
     public virtual DbSet<MovieSchedule> MovieSchedules { get; set; }
 
+    public virtual DbSet<Permission> Permissions { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<RolePermission> RolePermissions { get; set; }
+
     public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -42,11 +50,11 @@ public partial class CinemaContext : DbContext
     {
         modelBuilder.Entity<Booking>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83F79AD7024");
+            entity.HasKey(e => e.Id).HasName("PK__Booking__3213E83F526BA02E");
 
             entity.ToTable("Booking");
 
-            entity.HasIndex(e => e.TicketId, "UQ__Booking__D596F96AE4757940").IsUnique();
+            entity.HasIndex(e => new { e.TicketId, e.SeatId }, "UQ__Booking__0C9027B3F639F93B").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BookingDate)
@@ -54,24 +62,25 @@ public partial class CinemaContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("booking_date");
             entity.Property(e => e.CustomerId).HasColumnName("customer_id");
+            entity.Property(e => e.SeatId).HasColumnName("seat_id");
             entity.Property(e => e.TicketId).HasColumnName("ticket_id");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Bookings)
                 .HasForeignKey(d => d.CustomerId)
-                .HasConstraintName("FK__Booking__custome__03F0984C");
+                .HasConstraintName("FK__Booking__custome__31B762FC");
 
-            entity.HasOne(d => d.Ticket).WithOne(p => p.Booking)
-                .HasForeignKey<Booking>(d => d.TicketId)
-                .HasConstraintName("FK__Booking__ticket___04E4BC85");
+            entity.HasOne(d => d.Ticket).WithMany(p => p.Bookings)
+                .HasForeignKey(d => d.TicketId)
+                .HasConstraintName("FK__Booking__ticket___32AB8735");
         });
 
         modelBuilder.Entity<Customer>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83F0BA0AD4D");
+            entity.HasKey(e => e.Id).HasName("PK__Customer__3213E83FB102BC7D");
 
             entity.ToTable("Customer");
 
-            entity.HasIndex(e => e.UserId, "UQ__Customer__B9BE370E2842946B").IsUnique();
+            entity.HasIndex(e => e.UserId, "UQ__Customer__B9BE370EA0D3B75B").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Phone)
@@ -82,7 +91,7 @@ public partial class CinemaContext : DbContext
 
             entity.HasOne(d => d.User).WithOne(p => p.Customer)
                 .HasForeignKey<Customer>(d => d.UserId)
-                .HasConstraintName("FK__Customers__user___7A672E12");
+                .HasConstraintName("FK__Customer__user_i__2CF2ADDF");
         });
 
         modelBuilder.Entity<Hall>(entity =>
@@ -181,37 +190,88 @@ public partial class CinemaContext : DbContext
                 .HasConstraintName("FK__MovieSche__movie__5441852A");
         });
 
+        modelBuilder.Entity<Permission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Permissi__3213E83FC6844412");
+
+            entity.ToTable("Permission");
+
+            entity.HasIndex(e => new { e.TableName, e.Operation }, "UQ__Permissi__0F39A25366339217").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Operation)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("operation");
+            entity.Property(e => e.TableName)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("table_name");
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Role__3213E83FF680D43F");
+
+            entity.ToTable("Role");
+
+            entity.HasIndex(e => e.Name, "UQ__Role__72E12F1B1340B49D").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<RolePermission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__RolePerm__3213E83F151C9B15");
+
+            entity.ToTable("RolePermission");
+
+            entity.HasIndex(e => new { e.RoleId, e.PermissionId }, "UQ__RolePerm__C85A5462709A35E8").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.PermissionId).HasColumnName("permission_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+
+            entity.HasOne(d => d.Permission).WithMany(p => p.RolePermissions)
+                .HasForeignKey(d => d.PermissionId)
+                .HasConstraintName("FK__RolePermi__permi__489AC854");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.RolePermissions)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK__RolePermi__role___47A6A41B");
+        });
+
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Ticket__3213E83F2FC0F71A");
+            entity.HasKey(e => e.Id).HasName("PK__Ticket__3213E83F4EE9E0C8");
 
             entity.ToTable("Ticket");
 
-            entity.HasIndex(e => new { e.ScheduleId, e.SeatId }, "UQ__Ticket__1D6C54B75AB88665").IsUnique();
+            entity.HasIndex(e => e.ScheduleId, "UQ__Ticket__C46A8A6E4EAF5BFE").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("price");
             entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
-            entity.Property(e => e.SeatId).HasColumnName("seat_id");
 
-            entity.HasOne(d => d.Schedule).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.ScheduleId)
+            entity.HasOne(d => d.Schedule).WithOne(p => p.Ticket)
+                .HasForeignKey<Ticket>(d => d.ScheduleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Ticket__schedule__72C60C4A");
-
-            entity.HasOne(d => d.Seat).WithMany(p => p.Tickets)
-                .HasForeignKey(d => d.SeatId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Ticket__seat_id__73BA3083");
+                .HasConstraintName("FK__Ticket__price__17F790F9");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83FE81C4DA3");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F4ED1A997");
 
-            entity.HasIndex(e => e.Email, "UQ__Users__AB6E616405A05F60").IsUnique();
+            entity.ToTable("User");
+
+            entity.HasIndex(e => e.Email, "UQ__Users__AB6E616439F4F206").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Email)
@@ -222,10 +282,35 @@ public partial class CinemaContext : DbContext
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("password_hash");
+            entity.Property(e => e.PasswordSalt)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("password_salt");
             entity.Property(e => e.Username)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("username");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3213E83FB7179056");
+
+            entity.ToTable("UserRole");
+
+            entity.HasIndex(e => new { e.UserId, e.RoleId }, "UQ__UserRole__6EDEA152D2804C6B").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK__UserRole__role_i__51300E55");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__UserRole__user_i__503BEA1C");
         });
 
         OnModelCreatingPartial(modelBuilder);

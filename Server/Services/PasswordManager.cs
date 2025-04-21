@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using Humanizer.Bytes;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Server.Services
@@ -23,6 +24,11 @@ namespace Server.Services
             var hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, salt, iterations, hashAlgorithmName, keySize);
 
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));
+        }
+
+        public static string SaltToString(byte[] salt)
+        {
+            return Convert.ToHexString(salt);
         }
     }
 }

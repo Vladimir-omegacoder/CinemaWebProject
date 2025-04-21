@@ -11,7 +11,11 @@ public partial class User
 
     public string PasswordHash { get; set; } = null!;
 
+    public string PasswordSalt { get; set; } = null!;
+
     public string Username { get; set; } = null!;
 
     public virtual Customer? Customer { get; set; }
+
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 }

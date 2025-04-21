@@ -9,13 +9,9 @@ public partial class Ticket
 
     public int ScheduleId { get; set; }
 
-    public int SeatId { get; set; }
-
     public decimal Price { get; set; }
 
-    public virtual Booking? Booking { get; set; }
+    public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
     public virtual MovieSchedule Schedule { get; set; } = null!;
-
-    public virtual HallSeat Seat { get; set; } = null!;
 }
