@@ -18,7 +18,7 @@ namespace Server.Controllers
             _roleRepository = roleRepository;
         }
 
-        public async Task<IActionResult> AccountOverview()
+        public async Task<IActionResult> Account()
         {
             int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "UserId").Value);
             int roleId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "RoleId").Value);
@@ -38,7 +38,7 @@ namespace Server.Controllers
                 Role = roleName
             };
 
-            return View("AccountOverview", model);
+            return View("Account", model);
         }
     }
 }

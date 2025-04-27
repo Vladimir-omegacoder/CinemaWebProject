@@ -1,32 +1,52 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Server.Repositories;
 
 namespace Server.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IMovieInfoRepository _movieInfoRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IRoleRepository roleRepository, IMovieInfoRepository movieInfoRepository)
         {
             _logger = logger;
+            _roleRepository = roleRepository;
+            _movieInfoRepository = movieInfoRepository;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Home()
         {
-            return View();
+            string? roleId = User.Claims?.FirstOrDefault(c => c.Type == "RoleId")?.Value;
+            if (roleId == null)
+            {
+                return View(await _movieInfoRepository.GetAllAsync());
+            }
+
+            var role = await _roleRepository.GetAsync(int.Parse(roleId));
+            if (role == null)
+            {
+                return View(await _movieInfoRepository.GetAllAsync());
+            }
+
+            return RedirectToAction("Home", $"{role.Name}");
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public IActionResult Account()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Account", "Account");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
     }
 }

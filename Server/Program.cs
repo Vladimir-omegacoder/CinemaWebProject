@@ -30,6 +30,8 @@ namespace Server
             builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IMovieInfoRepository, MovieInfoRepository>();
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
@@ -55,7 +57,7 @@ namespace Server
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Login}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Home}/{id?}");
 
             app.Run();
         }

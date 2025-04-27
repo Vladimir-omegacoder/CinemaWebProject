@@ -1,0 +1,35 @@
+﻿h2 {
+    text-align: center;
+    color: #cb0d0d;
+    padding: 15px;
+}
+
+.movie-list {
+    
+}
+
+.movie-item {
+    border: 1px solid #242424;
+    margin: 10px;
+    background-color: #666;
+}
+
+.movie-item h4 {
+    text-align: center;
+    margin: 10px;
+    font-size: 18px;
+    color: white;
+}
+
+.movie-item p {
+    margin: 5px;
+    font-size: 14px;
+    color: white;
+}
+
+.main-content {
+    margin-left: 200px;
+    margin-right: 200px;
+    height: 100%;
+    background-color: #1d1d1d;
+}

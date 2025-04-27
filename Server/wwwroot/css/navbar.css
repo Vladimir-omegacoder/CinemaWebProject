@@ -1,0 +1,46 @@
+﻿.navbar {
+    text-align: center;
+    background-color: #222222;
+    padding: 0px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    background-color: #2f2f2f;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar a {
+    color: white; 
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: 36px;
+}
+
+.navbar li:hover{
+    background-color:darkgray;
+}
+
+.navbar li, .navbar .account, .navbar .icon {
+    float: left;
+    min-width: 200px;
+    max-width: 400px;
+    margin: 10px 15px;
+}
+
+.navbar .account {
+    float: right;
+    color: white; 
+    text-decoration-line: underline;
+    text-underline-offset: 5px;
+    margin: 10px 15px;
+}
+
+.navbar .icon:hover {
+    background-color:#2f2f2f;
+}

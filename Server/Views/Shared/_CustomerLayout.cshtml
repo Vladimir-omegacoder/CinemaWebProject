@@ -11,6 +11,19 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <ul>
+                <li class="icon">
+                    <a asp-controller="Home" asp-action="Home">
+                        <img src="~/img/logo.png" alt="Logo" height="36">
+                    </a>
+                </li>
+            </ul>
+            <div class="account"><a asp-controller="Login" asp-action="Login">Log in</a></div>
+        </nav>
+    </header>
+
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
