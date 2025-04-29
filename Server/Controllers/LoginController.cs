@@ -117,5 +117,12 @@ namespace Server.Controllers
             return RedirectToAction("Home", $"{selectedRole}");
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(Program.cookieAuthenticationSchemeName);
+            return RedirectToAction("Home", "Home");
+        }
     }
 }
