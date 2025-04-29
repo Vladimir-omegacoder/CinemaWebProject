@@ -1,53 +1,32 @@
-﻿@section Styles {
-    <link rel="stylesheet" href="~/css/customer/home.css" />
+﻿@{
+    Layout = "_CustomerLayout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" />
 }
 
 @model List<MovieInfo>
 
 
 
-<h2>Movies</h2>
-
-<div class="container">
-    <div class="row">
-        <!-- Movie 1 -->
-        <div class="col-6">
-            <div class="movie-item">
-                <h4>Movie Title 1</h4>
-                <p>Genre: Action</p>
-                <p>Release Year: 2021</p>
-                <p>Description: A thrilling action-packed movie.</p>
-            </div>
-        </div>
-
-        <!-- Movie 2 -->
-        <div class="col-6">
-            <div class="movie-item">
-                <h4>Movie Title 2</h4>
-                <p>Genre: Comedy</p>
-                <p>Release Year: 2020</p>
-                <p>Description: A hilarious comedy that will keep you laughing.</p>
-            </div>
-        </div>
-
-        <!-- Movie 3 -->
-        <div class="col-6">
-            <div class="movie-item">
-                <h4>Movie Title 3</h4>
-                <p>Genre: Drama</p>
-                <p>Release Year: 2019</p>
-                <p>Description: A dramatic portrayal of real-life events.</p>
-            </div>
-        </div>
-
-        <!-- Movie 4 -->
-        <div class="col-6">
-            <div class="movie-item">
-                <h4>Movie Title 4</h4>
-                <p>Genre: Thriller</p>
-                <p>Release Year: 2022</p>
-                <p>Description: A gripping thriller that will keep you on edge.</p>
-            </div>
+<div class="main-content">
+    <h2>Movies</h2>
+    <div class="container movie-list">
+        <div class="row">
+            @{
+                foreach (var movie in Model)
+                {
+                    <div class="col-6">
+                        <div class="movie-item">
+                            <h4>@movie.Title</h4>
+                            <p>Genre: @movie.Genre</p>
+                            <p>Rating: @movie.Rating / 10</p>
+                            <p>Age restricions: @movie.AgeRestrictions+</p>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

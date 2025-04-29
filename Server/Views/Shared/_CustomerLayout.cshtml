@@ -15,12 +15,15 @@
         <nav class="navbar">
             <ul>
                 <li class="icon">
-                    <a asp-controller="Home" asp-action="Home">
+                    <a asp-controller="Customer" asp-action="Home">
                         <img src="~/img/logo.png" alt="Logo" height="36">
                     </a>
                 </li>
+                <li>
+                    <a asp-controller="Customer" asp-action="Tickets">Tickets</a>
+                </li>
             </ul>
-            <div class="account"><a asp-controller="Login" asp-action="Login">Log in</a></div>
+            <div class="account"><a asp-controller="Customer" asp-action="Account">Account</a></div>
         </nav>
     </header>
 

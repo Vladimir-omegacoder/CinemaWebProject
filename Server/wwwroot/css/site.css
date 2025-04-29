@@ -23,3 +23,10 @@ body {
     margin-bottom: 60px;
     color: white;
 }
+
+.main-content {
+    margin-left: 200px;
+    margin-right: 200px;
+    height: 100%;
+    background-color: #1d1d1d;
+}
