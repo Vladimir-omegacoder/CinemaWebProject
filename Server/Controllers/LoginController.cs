@@ -82,7 +82,7 @@ namespace Server.Controllers
 
             await HttpContext.SignInAsync(Program.cookieAuthenticationSchemeName, principal);
 
-            return RedirectToAction("AccountOverview", "Account");
+            return RedirectToAction("Home", $"{role}");
         }
 
         [HttpGet]
@@ -114,7 +114,7 @@ namespace Server.Controllers
 
             await HttpContext.SignInAsync(Program.cookieAuthenticationSchemeName, principal);
 
-            return RedirectToAction("AccountOverview", "Account");
+            return RedirectToAction("Home", $"{selectedRole}");
         }
 
     }

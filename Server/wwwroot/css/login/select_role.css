@@ -1,0 +1,9 @@
+﻿.role {
+    font-size: 36px;
+}
+
+select {
+    width: 100%;
+    padding: 5px;
+    text-transform: capitalize;
+}

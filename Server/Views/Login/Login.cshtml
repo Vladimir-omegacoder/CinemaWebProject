@@ -3,14 +3,14 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/credentials.css" />
+    <link rel="stylesheet" href="~/css/login/credentials.css" />
 }
 
 @model Server.Models.DataModel.LoginCredentials
 
 
 
-<h2 class="element">Login</h2>
+<h2 class="element">Log in</h2>
 
 @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
 {
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <button class="element" type="submit">Login</button>
+    <button class="element" type="submit">Log in</button>
 
     <div class="form-link container">
         Don't have an account? <a asp-controller="Registration" asp-action="Register">Register here</a>

@@ -2,6 +2,11 @@
     ViewData["Title"] = "Choose Role";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/login/credentials.css" />
+    <link rel="stylesheet" href="~/css/login/select_role.css" />
+}
+
 @model List<string>
 
 
@@ -9,12 +14,13 @@
 <h2>Choose Your Role</h2>
 
 <form asp-action="SelectRole" method="post">
-    @for (int i = 0; i < Model.Count; i++)
-    {
-        <div>
-            <input type="radio" id="role_@i" name="selectedRole" value="@Model[i]" required />
-            <label for="role_@i">@Model[i]</label>
-        </div>
-    }
-    <button type="submit">Continue</button>
+    <div>
+        <select name="selectedRole">
+            @foreach (var role in Model)
+            {
+                <option value=@role>@role</option>
+            }
+        </select>
+        <button type="submit">Select</button>
+    </div>
 </form>

@@ -2,8 +2,8 @@
     ViewData["Title"] = "Register";
 }
 
-@section Styles{
-    <link rel="stylesheet" href="~/css/credentials.css" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/login/credentials.css" />
 }
 
 @model Server.Models.DataModel.RegistrationData
@@ -42,6 +42,6 @@
     <button class="element" type="submit">Register</button>
 
     <div class="form-link container">
-        Already have an account? <a asp-controller="Login" asp-action="Login">Login here</a>
+        Already have an account? <a asp-controller="Login" asp-action="Login">Log in here</a>
     </div>
 </form>
