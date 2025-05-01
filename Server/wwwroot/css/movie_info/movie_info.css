@@ -23,5 +23,12 @@ form {
 
 tr, p {
     padding: 5px;
-    display:grid;
+    display: grid;
+}
+
+.movie-schedule {
+    margin: auto;
+    padding: 25px;
+    text-align: center;
+    width: 30%;
 }

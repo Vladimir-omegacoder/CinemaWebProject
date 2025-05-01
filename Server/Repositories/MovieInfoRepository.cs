@@ -16,6 +16,7 @@ namespace Server.Repositories
         {
             var movies = _context.Movies;
             var genres = _context.MovieGenres;
+            var schedules = _context.MovieSchedules;
             var movieInfo = movies.Join(genres, m => m.GenreId, g => g.Id, (m, g) =>
             new MovieInfo()
             {
@@ -26,6 +27,7 @@ namespace Server.Repositories
                 Duration = m.Duration,
                 AgeRestrictions = m.AgeRestrictions,
                 Description = m.Description,
+                MovieSchedules = schedules.Where(s => s.MovieId == m.Id).ToList(),
             });
 
             return await movieInfo.ToListAsync();
@@ -35,6 +37,7 @@ namespace Server.Repositories
         {
             var movies = _context.Movies;
             var genres = _context.MovieGenres;
+            var schedules = _context.MovieSchedules;
             var movieInfo = movies.Where(m => m.Id == id).Join(genres, m => m.GenreId, g => g.Id, (m, g) =>
             new MovieInfo()
             {
@@ -45,6 +48,7 @@ namespace Server.Repositories
                 Duration = m.Duration,
                 AgeRestrictions = m.AgeRestrictions,
                 Description = m.Description,
+                MovieSchedules = schedules.Where(s => s.MovieId == m.Id).ToList(),
             });
 
             var result = await movieInfo.ToListAsync();

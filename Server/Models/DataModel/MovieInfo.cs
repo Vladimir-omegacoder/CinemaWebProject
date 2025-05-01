@@ -17,5 +17,7 @@ namespace Server.Models.DataModel
         public int Duration { get; set; }
 
         public string? Description { get; set; }
+
+        public List<MovieSchedule> MovieSchedules { get; set; } = new List<MovieSchedule>();
     }
 }

@@ -39,7 +39,25 @@
         <p>@Model.Description</p>
     </div>
 
-    <form asp-action="Login" asp-controller="Login" method="post">
-        <button type="submit">Buy ticket</button>
-    </form>
+    <hr>
+    <h4 style="text-align: center">Schedule</h4>
+    @if (Model.MovieSchedules.Count > 0)
+    {
+        <table class="movie-schedule">
+            @foreach (var scheduleGroup in Model.MovieSchedules.OrderByDescending(s => s.ShowDate).OrderBy(s => s.StartTime).GroupBy(s => s.ShowDate))
+            {
+                <tr>
+                    <th>@scheduleGroup.Key</th>
+                    @foreach (var schedule in scheduleGroup)
+                    {
+                        <td><a asp-controller="Login" asp-action="Login">@schedule.StartTime - @schedule.EndTime</a></td>
+                    }
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <h5>This movie is not in film strip yet.</h5>
+    }
 </div>
