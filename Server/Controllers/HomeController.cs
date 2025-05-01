@@ -48,5 +48,21 @@ namespace Server.Controllers
                 return RedirectToAction("Login", "Login");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MovieInfo(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return NotFound();
+            }
+
+            var movieInfo = await _movieInfoRepository.GetAsync(id);
+            if (movieInfo == null)
+            {
+                return NotFound();
+            }
+            return View(movieInfo);
+        }
     }
 }

@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "_CustomerLayout";
+    ViewData["Title"] = Model.Title;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/movie_info/movie_info.css" />
+}
+
+@model Server.Models.DataModel.MovieInfo
+
+
+
+<div class="main-content">
+    <h2>@Model.Title</h2>
+    <table class="movie-details">
+        <tr>
+            <th>Title</th>
+            <td>@Model.Title</td>
+        <tr />
+        <tr>
+            <th>Genre</th>
+            <td>@Model.Genre</td>
+        </tr>
+        <tr>
+            <th>Rating</th>
+            <td>@Model.Rating / 10</td>
+        </tr>
+        <tr>
+            <th>Age restrictions</th>
+            <td>@Model.AgeRestrictions+</td>
+        </tr>
+        <tr>
+            <th>Duration</th>
+            <td>@Model.Duration minutes</td>
+        </tr>
+    </table>
+    <h4>Description</h4>
+    <p>@Model.Description</p>
+
+    <form asp-action="Logout" asp-controller="Login" method="post">
+        <button type="submit">Buy ticket</button>
+    </form>
+</div>

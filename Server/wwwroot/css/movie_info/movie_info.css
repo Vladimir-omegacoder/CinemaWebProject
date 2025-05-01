@@ -1,0 +1,27 @@
+﻿h2 {
+    
+}
+
+.movie-details {
+    margin: 10px;
+    padding: 25px;
+}
+
+button {
+    margin: 30px;
+}
+
+form {
+    text-align: center;
+}
+
+.movie-info { 
+    padding: 25px;
+    margin-left: 10%;
+    width: 30%;
+}
+
+tr, p {
+    padding: 5px;
+    display:grid;
+}

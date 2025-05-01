@@ -49,7 +49,7 @@ namespace Server.Repositories
 
             var result = await movieInfo.ToListAsync();
 
-            return result.Count == 0 ? result[0] : null;
+            return result.Count == 0 ? null : result[0];
         }
     }
 }
