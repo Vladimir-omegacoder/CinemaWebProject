@@ -8,11 +8,13 @@ namespace Server.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserRoleRepository _userRoleRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public RegistrationService(IUserRepository userRepository, IUserRoleRepository userRoleRepository)
+        public RegistrationService(IUserRepository userRepository, IUserRoleRepository userRoleRepository, ICustomerRepository customerRepository)
         {
             _userRepository = userRepository;
             _userRoleRepository = userRoleRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<LoginCredentials> RegisterAsync(RegistrationData registrationData)
@@ -43,8 +45,14 @@ namespace Server.Services
                 RoleId = 5,
                 UserId = userId
             };
-
             await _userRoleRepository.CreateAsync(userRole);
+
+            Customer customer = new()
+            {
+                UserId = userId,
+                Phone = null,
+            };
+            await _customerRepository.CreateAsync(customer);
 
             return new LoginCredentials { Email = registrationData.Email, Password = registrationData.Password };
         }

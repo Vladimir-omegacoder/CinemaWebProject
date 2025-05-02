@@ -8,7 +8,7 @@
     margin: auto;
 }
 
-.seat-button {
+.seat-button, .seat-button-owned, .seat-button-taken {
     width: 100%;
     height: 100%;
     padding: 0px;
@@ -44,4 +44,16 @@ td {
 .buy-ticket-button {
     text-align: center;
     padding: 20px
+}
+
+.seat-button-owned {
+    background-color: #2ece00;
+}
+
+.seat-button-taken {
+    background-color: #e20000;
+}
+
+.seat-button-owned:disabled, .seat-button-taken:disabled {
+    cursor: default;
 }

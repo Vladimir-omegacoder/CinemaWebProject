@@ -22,19 +22,22 @@ namespace Server.Controllers
         private readonly IMovieInfoRepository _movieInfoRepository;
         private readonly IMovieScheduleRepository _movieScheduleRepository;
         private readonly IHallInfoRepository _hallInfoRepository;
+        private readonly IBookingRepository _bookingRepository;
 
         public CustomerController(
             IUserRepository userRepository,
             ICustomerRepository customerRepository,
             IMovieInfoRepository movieInfoRepository,
             IHallInfoRepository hallInfoRepository,
-            IMovieScheduleRepository movieScheduleRepository)
+            IMovieScheduleRepository movieScheduleRepository,
+            IBookingRepository bookingRepository)
         {
             _userRepository = userRepository;
             _customerRepository = customerRepository;
             _movieInfoRepository = movieInfoRepository;
             _hallInfoRepository = hallInfoRepository;
             _movieScheduleRepository = movieScheduleRepository;
+            _bookingRepository = bookingRepository;
         }
 
         [HttpGet]
@@ -92,10 +95,10 @@ namespace Server.Controllers
         [HttpGet]
         public async Task<IActionResult> ViewSeats(int scheduleId)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return NotFound();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return NotFound();
+            }
             var schedule = await _movieScheduleRepository.GetAsync(scheduleId);
             if (schedule == null)
             {
@@ -103,11 +106,23 @@ namespace Server.Controllers
             }
 
             var hallInfo = await _hallInfoRepository.GetAsync(schedule.HallId);
-            return View(hallInfo);
+            if (hallInfo == null)
+            {
+                return NotFound();
+            }
+
+            var bookings = await _bookingRepository.GetAllAsync();
+
+            var availableSeatsInfo = new AvailableSeatsInfo()
+            {
+                HallInfo = hallInfo,
+                Bookings = bookings,
+            };
+            return View(availableSeatsInfo);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PlaceOrder()
+        public async Task<IActionResult> BuyTickets()
         {
             return View();
         }

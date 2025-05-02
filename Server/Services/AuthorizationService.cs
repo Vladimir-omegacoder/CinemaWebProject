@@ -8,11 +8,13 @@ namespace Server.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public AuthorizationService(IUserRepository userRepository, IRoleRepository roleRepository)
+        public AuthorizationService(IUserRepository userRepository, IRoleRepository roleRepository, ICustomerRepository customerRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<List<Claim>> GetUserClaimsAsync(LoginCredentials loginCredentials, string role)
@@ -26,10 +28,20 @@ namespace Server.Services
             int? roleId = roles.FirstOrDefault(r => r.Name == role)?.Id;
 
             if (userId == null || roleId == null)
-                throw new Exception("Authorization error");
+                throw new InvalidOperationException("Authorization error");
 
             claims.Add(new Claim("UserId", userId.ToString()));
             claims.Add(new Claim("RoleId", roleId.ToString()));
+
+            if (roleId == 5)
+            {
+                var customers = await _customerRepository.GetAllAsync();
+                int? customerId = customers.FirstOrDefault(c => c.UserId == userId)?.Id;
+                if (customerId == null)
+                    throw new InvalidOperationException("Authorization error");
+
+                claims.Add(new Claim("CustomerId", customerId.ToString()));
+            }
 
             return claims;
         }

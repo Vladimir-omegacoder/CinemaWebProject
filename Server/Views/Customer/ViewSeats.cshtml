@@ -4,34 +4,59 @@
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/buy_ticket/buy_ticket.css" />
-    <script src="~/js/buy_ticket/buy_ticket.js"></script>
+    <link rel="stylesheet" href="~/css/view_seats/view_seats.css" />
+    <script src="~/js/view_seats/view_seats.js"></script>
 }
 
-@model Server.Models.DataModel.HallInfo
+@model Server.Models.DataModel.AvailableSeatsInfo
 
 
 
 <div class="main-content">
-    <form method="post" asp-action="BuyTickets">
-        <h2>@Model.Name</h2>
+    <form method="post" asp-controller="Customer" asp-action="BuyTickets">
+        <h2>@Model.HallInfo.Name</h2>
         <table class="hall-layout">
-            @for (int i = 0; i < Model.HallSeats.GetLength(0); i++)
+            @for (int i = 0; i < Model.HallInfo.HallSeats.GetLength(0); i++)
             {
-                var row = Model.HallSeats[i];
+                var row = Model.HallInfo.HallSeats[i];
                 <tr>
                     <th>Row @(i + 1)</th>
                     @for (int j = 0; j < row.Length; j++)
                     {
-                        var seatId = $"R{i + 1}S{j + 1}";
                         var seat = row[j];
-                        <td>
-                            <div class="seat">
-                                <button type="button" class="seat-button" seat-id="@seat.Id" onclick="selectSeat(this)">
-                                    @(j + 1)
-                                </button>
-                            </div>
-                        </td>
+                        if (Model.Bookings.FirstOrDefault(b => b.SeatId == seat.Id) is var booking && booking != null)
+                        {
+                            if (booking.CustomerId.ToString() == User.Claims.FirstOrDefault(c => c.Type == "CustomerId")?.Value)
+                            {
+                                <td>
+                                    <div class="seat">
+                                        <button type="button" class="seat-button-owned disabled">
+                                            @(j + 1)
+                                        </button>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <div class="seat">
+                                        <button type="button" class="seat-button-taken disabled">
+                                            @(j + 1)
+                                        </button>
+                                    </div>
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            <td>
+                                <div class="seat">
+                                    <button type="button" class="seat-button" seat-id="@seat.Id" onclick="selectSeat(this)">
+                                        @(j + 1)
+                                    </button>
+                                </div>
+                            </td>
+                        }
                     }
                 </tr>
             }

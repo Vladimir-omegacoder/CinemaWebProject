@@ -34,6 +34,7 @@ namespace Server
             builder.Services.AddScoped<IMovieInfoRepository, MovieInfoRepository>();
             builder.Services.AddScoped<IHallInfoRepository, HallInfoRepository>();
             builder.Services.AddScoped<IMovieScheduleRepository, MovieScheduleRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
