@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "_CustomerLayout";
+    ViewData["Title"] = "Buy ticket";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/buy_ticket/buy_ticket.css" />
+    <script src="~/js/buy_ticket/buy_ticket.js"></script>
+}
+
+@model Server.Models.DataModel.HallInfo
+
+
+
+<div class="main-content">
+    <form method="post" asp-action="BuyTickets">
+        <h2>@Model.Name</h2>
+        <table class="hall-layout">
+            @for (int i = 0; i < Model.HallSeats.GetLength(0); i++)
+            {
+                var row = Model.HallSeats[i];
+                <tr>
+                    <th>Row @(i + 1)</th>
+                    @for (int j = 0; j < row.Length; j++)
+                    {
+                        var seatId = $"R{i + 1}S{j + 1}";
+                        var seat = row[j];
+                        <td>
+                            <div class="seat">
+                                <button type="button" class="seat-button" seat-id="@seat.Id" onclick="selectSeat(this)">
+                                    @(j + 1)
+                                </button>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+
+        <input type="hidden" name="SelectedSeats" id="SelectedSeats" />
+        <div class="buy-ticket-button"><button type="submit" id="submitBtn" disabled>Buy</button></div>
+    </form>
+</div>

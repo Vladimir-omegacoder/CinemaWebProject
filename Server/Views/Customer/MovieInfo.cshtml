@@ -48,7 +48,7 @@
                     <th>@scheduleGroup.Key</th>
                     @foreach (var schedule in scheduleGroup)
                     {
-                        // Buy ticket here
+                        <td><a asp-controller="Customer" asp-action="ViewSeats" asp-route-scheduleId="@schedule.Id">@schedule.StartTime - @schedule.EndTime</a></td>
                     }
                 </tr>
             }

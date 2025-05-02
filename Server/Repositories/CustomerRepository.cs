@@ -27,7 +27,7 @@ namespace Server.Repositories
         {
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
-            return _context.Customers.FirstOrDefault(c => c.Id == customer.Id && c.UserId == customer.UserId && c.Phone == customer.Phone);
+            return await _context.Customers.FirstOrDefaultAsync(c => c.Id == customer.Id && c.UserId == customer.UserId && c.Phone == customer.Phone);
         }
 
         public async Task UpdateAsync(Customer customer)

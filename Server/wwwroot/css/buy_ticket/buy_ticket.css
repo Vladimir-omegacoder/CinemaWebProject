@@ -1,0 +1,47 @@
+﻿h2 {
+    text-align: center;
+    margin: 15px;
+    padding: 20px;
+}
+
+.hall-layout {
+    margin: auto;
+}
+
+.seat-button {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: auto;
+    background-color: #757575
+}
+
+.seat {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    padding: 0px;
+}
+
+td {
+    padding: 10px;
+}
+
+.seat-button.selected {
+    background-color: #e5a100;
+    color: white;
+}
+
+#submitBtn {
+    width: 8%;
+}
+
+#submitBtn:disabled {
+    cursor: default;
+    background-color: #3c72ac;
+}
+
+.buy-ticket-button {
+    text-align: center;
+    padding: 20px
+}

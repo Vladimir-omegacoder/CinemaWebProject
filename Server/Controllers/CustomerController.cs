@@ -20,12 +20,21 @@ namespace Server.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IMovieInfoRepository _movieInfoRepository;
+        private readonly IMovieScheduleRepository _movieScheduleRepository;
+        private readonly IHallInfoRepository _hallInfoRepository;
 
-        public CustomerController(IUserRepository userRepository, ICustomerRepository customerRepository, IMovieInfoRepository movieInfoRepository)
+        public CustomerController(
+            IUserRepository userRepository,
+            ICustomerRepository customerRepository,
+            IMovieInfoRepository movieInfoRepository,
+            IHallInfoRepository hallInfoRepository,
+            IMovieScheduleRepository movieScheduleRepository)
         {
             _userRepository = userRepository;
             _customerRepository = customerRepository;
             _movieInfoRepository = movieInfoRepository;
+            _hallInfoRepository = hallInfoRepository;
+            _movieScheduleRepository = movieScheduleRepository;
         }
 
         [HttpGet]
@@ -81,7 +90,30 @@ namespace Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Tickets()
+        public async Task<IActionResult> ViewSeats(int scheduleId)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return NotFound();
+            //}
+            var schedule = await _movieScheduleRepository.GetAsync(scheduleId);
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+
+            var hallInfo = await _hallInfoRepository.GetAsync(schedule.HallId);
+            return View(hallInfo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PlaceOrder()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyTickets()
         {
             return View();
         }

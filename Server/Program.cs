@@ -25,13 +25,15 @@ namespace Server
             builder.Services.AddDbContext<CinemaContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();  
             builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
             builder.Services.AddScoped<IRolePermissionRepository, RolePermissionRepository>();
             builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
             builder.Services.AddScoped<IMovieInfoRepository, MovieInfoRepository>();
+            builder.Services.AddScoped<IHallInfoRepository, HallInfoRepository>();
+            builder.Services.AddScoped<IMovieScheduleRepository, MovieScheduleRepository>();
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
