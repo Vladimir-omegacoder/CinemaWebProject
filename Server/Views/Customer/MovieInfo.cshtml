@@ -42,11 +42,11 @@
     @if (Model.MovieSchedules.Count > 0)
     {
         <table class="movie-schedule">
-            @foreach (var scheduleGroup in Model.MovieSchedules.OrderByDescending(s => s.ShowDate).OrderBy(s => s.StartTime).GroupBy(s => s.ShowDate))
+            @foreach (var scheduleGroup in Model.MovieSchedules.OrderBy(s => s.ShowDate).GroupBy(s => s.ShowDate))
             {
                 <tr>
                     <th>@scheduleGroup.Key</th>
-                    @foreach (var schedule in scheduleGroup)
+                    @foreach (var schedule in scheduleGroup.OrderBy(s => s.StartTime))
                     {
                         <td><a asp-controller="Customer" asp-action="ViewSeats" asp-route-scheduleId="@schedule.Id">@schedule.StartTime - @schedule.EndTime</a></td>
                     }

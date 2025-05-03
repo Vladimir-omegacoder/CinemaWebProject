@@ -35,10 +35,13 @@ namespace Server
             builder.Services.AddScoped<IHallInfoRepository, HallInfoRepository>();
             builder.Services.AddScoped<IMovieScheduleRepository, MovieScheduleRepository>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IHallSeatRepository, HallSeatRepository>();
+            builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
             builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+            builder.Services.AddScoped<ITicketBookingService, TicketBookingService>();
 
             var app = builder.Build();
 

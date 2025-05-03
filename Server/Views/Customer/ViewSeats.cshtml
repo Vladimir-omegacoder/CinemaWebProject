@@ -14,6 +14,8 @@
 
 <div class="main-content">
     <form method="post" asp-controller="Customer" asp-action="BuyTickets">
+        <input type="hidden" name="ScheduleId" value="@Model.MovieSchedule.Id" />
+        <input type="hidden" name="SelectedSeats" id="SelectedSeats" />
         <h2>@Model.HallInfo.Name</h2>
         <table class="hall-layout">
             @for (int i = 0; i < Model.HallInfo.HallSeats.GetLength(0); i++)

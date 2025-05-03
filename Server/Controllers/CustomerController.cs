@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace Server.Controllers
         private readonly IMovieScheduleRepository _movieScheduleRepository;
         private readonly IHallInfoRepository _hallInfoRepository;
         private readonly IBookingRepository _bookingRepository;
+        private readonly ITicketBookingService _ticketBookingService;
 
         public CustomerController(
             IUserRepository userRepository,
@@ -30,7 +32,8 @@ namespace Server.Controllers
             IMovieInfoRepository movieInfoRepository,
             IHallInfoRepository hallInfoRepository,
             IMovieScheduleRepository movieScheduleRepository,
-            IBookingRepository bookingRepository)
+            IBookingRepository bookingRepository,
+            ITicketBookingService ticketBookingService)
         {
             _userRepository = userRepository;
             _customerRepository = customerRepository;
@@ -38,6 +41,7 @@ namespace Server.Controllers
             _hallInfoRepository = hallInfoRepository;
             _movieScheduleRepository = movieScheduleRepository;
             _bookingRepository = bookingRepository;
+            _ticketBookingService = ticketBookingService;
         }
 
         [HttpGet]
@@ -111,20 +115,40 @@ namespace Server.Controllers
                 return NotFound();
             }
 
-            var bookings = await _bookingRepository.GetAllAsync();
+            var bookings = await _ticketBookingService.GetBookingsAsync(scheduleId);
 
             var availableSeatsInfo = new AvailableSeatsInfo()
             {
                 HallInfo = hallInfo,
                 Bookings = bookings,
+                MovieSchedule = schedule,
             };
             return View(availableSeatsInfo);
         }
 
         [HttpPost]
-        public async Task<IActionResult> BuyTickets()
+        public async Task<IActionResult> BuyTickets(int scheduleId, string selectedSeats)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var seatIds = selectedSeats?
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(id => int.Parse(id))
+                .ToList();
+
+            if (seatIds == null || !seatIds.Any())
+                return BadRequest("No seats selected");
+
+            var customerId = User.FindFirst("CustomerId")?.Value;
+            if (customerId == null)
+                return BadRequest("Customer is not authorized");
+
+            await _ticketBookingService.BookTicketsAsync(int.Parse(customerId), scheduleId, seatIds.ToArray());
+
+            return RedirectToAction("ViewSeats", new { scheduleId });
         }
 
         [HttpGet]
