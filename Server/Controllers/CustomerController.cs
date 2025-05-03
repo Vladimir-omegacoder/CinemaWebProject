@@ -23,7 +23,7 @@ namespace Server.Controllers
         private readonly IMovieInfoRepository _movieInfoRepository;
         private readonly IMovieScheduleRepository _movieScheduleRepository;
         private readonly IHallInfoRepository _hallInfoRepository;
-        private readonly IBookingRepository _bookingRepository;
+        private readonly ITicketRepository _ticketRepository;
         private readonly ITicketBookingService _ticketBookingService;
 
         public CustomerController(
@@ -32,7 +32,7 @@ namespace Server.Controllers
             IMovieInfoRepository movieInfoRepository,
             IHallInfoRepository hallInfoRepository,
             IMovieScheduleRepository movieScheduleRepository,
-            IBookingRepository bookingRepository,
+            ITicketRepository ticketRepository,
             ITicketBookingService ticketBookingService)
         {
             _userRepository = userRepository;
@@ -40,7 +40,7 @@ namespace Server.Controllers
             _movieInfoRepository = movieInfoRepository;
             _hallInfoRepository = hallInfoRepository;
             _movieScheduleRepository = movieScheduleRepository;
-            _bookingRepository = bookingRepository;
+            _ticketRepository = ticketRepository;
             _ticketBookingService = ticketBookingService;
         }
 
@@ -116,9 +116,11 @@ namespace Server.Controllers
             }
 
             var bookings = await _ticketBookingService.GetBookingsAsync(scheduleId);
+            var ticket = (await _ticketRepository.GetAllAsync()).FirstOrDefault(t => t.ScheduleId == scheduleId);
 
             var availableSeatsInfo = new AvailableSeatsInfo()
             {
+                Ticket = ticket,
                 HallInfo = hallInfo,
                 Bookings = bookings,
                 MovieSchedule = schedule,

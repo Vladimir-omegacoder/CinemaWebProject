@@ -4,6 +4,11 @@
     padding: 20px;
 }
 
+h4 {
+    text-align: center;
+    margin: 15px;
+}
+
 .hall-layout {
     margin: auto;
 }
